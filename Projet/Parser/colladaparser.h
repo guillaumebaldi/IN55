@@ -7,6 +7,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <QMatrix4x4>
+
 #include "model.h"
 #include "bone.h"
 #include "mesh.h"
@@ -23,6 +25,9 @@ public:
     void parseBones(const aiScene* scene, aiNode *node, vector<Bone>& bones);
     void parseMeshes(aiMesh* mesh);
 private:
+    vector<QVector3D> vertices;
+    vector<QVector3D> normales;
+    vector<int> indices;
     vector<Mesh> meshes;
 };
 
