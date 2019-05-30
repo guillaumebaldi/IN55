@@ -11,7 +11,7 @@ MainWidget::MainWidget(QWidget *parent) :
 void MainWidget::load() {
 
     ColladaParser parser;
-    string s = "resources\\humanAnim.dae";
+    string s = "resources\\human_walk.dae";
     Model m = parser.loadColladaFile(s);
     for(int i = 0; i < m.getBones().size(); i++) {
         std::cout << m.getBones()[i].getId() << " " <<m.getBones()[i].getTransform().data()[0] << "\n";

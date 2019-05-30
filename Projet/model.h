@@ -5,6 +5,7 @@
 #include <QMatrix4x4>
 #include "bone.h"
 #include "mesh.h"
+#include "animation.h"
 
 #include <vector>
 using namespace std;
@@ -16,6 +17,7 @@ public:
     Model(QMatrix4x4);
     Model(QMatrix4x4, vector<Bone>);
     Model(QMatrix4x4, vector<Bone>, vector<Mesh>);
+    Model(QMatrix4x4, vector<Bone>, vector<Mesh>, vector<Animation>);
     QMatrix4x4 getTransform();
     void setTransform(QMatrix4x4 m);
     void setBones(vector<Bone> bones);
@@ -24,12 +26,17 @@ public:
     void setMeshes(vector<Mesh> meshes);
     vector<Mesh> getMeshes();
     void addMesh(Mesh m);
+    void setAnimations(vector<Animation> animations);
+    vector<Animation> getAnimations();
+    void addAnimation(Animation a);
 private:
     QMatrix4x4 transform;
     vector<Bone> bones;
     vector<Mesh> meshes;
+    vector <Animation> animations;
     size_t nbBones = 0;
     size_t nbMeshes = 0;
+    size_t nbAnimations = 0;
 };
 
 #endif // MODEL_H
