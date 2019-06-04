@@ -82,3 +82,7 @@ void Model::addAnimation(Animation a) {
     this->animations.push_back(a);
     this->nbAnimations++;
 }
+
+
+
+

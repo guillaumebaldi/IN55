@@ -5,38 +5,28 @@ Mesh::Mesh()
 
 }
 
-string Mesh::getId() {
-    return this->id;
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices){
+    this->vertices = vertices;
+    this->indices = indices;    
+
 }
 
-void Mesh::setId(string id) {
-    this->id = id;
-}
-
-vector<QVector3D> Mesh::getVertices() {
+vector<Vertex> Mesh::getVertices() {
     return this->vertices;
 }
 
-vector<int> Mesh::getIndices() {
+vector<unsigned int> Mesh::getIndices() {
     return this->indices;
 }
 
-vector<QVector3D> Mesh::getNormales() {
-    return this->normales;
-}
-
-void Mesh::setVertices(vector<QVector3D> vertices) {
+void Mesh::setVertices(vector<Vertex> vertices) {
     this->vertices = vertices;
 }
 
-void Mesh::addVertex(QVector3D vertex) {
+void Mesh::addVertex(Vertex vertex) {
     this->vertices.push_back(vertex);
 }
 
-void Mesh::addIndex(int index) {
+void Mesh::addIndex(unsigned int index) {
     this->indices.push_back(index);
-}
-
-void Mesh::addNormal(QVector3D normal) {
-    this->normales.push_back(normal);
 }

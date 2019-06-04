@@ -2,29 +2,39 @@
 #define MESH_H
 
 #include <QVector3D>
+#include <QVector2D>
+
+
+
 
 #include <vector>
 #include <iostream>
+
 using namespace std;
+
+struct Vertex
+{
+    // Position
+    QVector3D position;
+    // Normal
+   QVector3D normal;
+    // TexCoords
+   QVector2D uv;
+};
 
 class Mesh
 {
 public:
     Mesh();
-    string getId();
-    void setId(string id);
-    vector<QVector3D> getVertices();
-    vector<int> getIndices();
-    vector<QVector3D> getNormales();
-    void setVertices(vector<QVector3D> vertices);
-    void addVertex(QVector3D vertex);
-    void addIndex(int index);
-    void addNormal(QVector3D normal);
-private:
-    string id;
-    vector<QVector3D> vertices;
-    vector<int> indices;
-    vector<QVector3D> normales;
+    Mesh(vector<Vertex> vertices, vector<unsigned int> indices);
+    vector<Vertex> getVertices();
+    vector<unsigned int> getIndices();
+    void setVertices(vector<Vertex> vertices);
+    void addVertex(Vertex vertex);
+    void addIndex(unsigned int index);
+private:    
+    vector<Vertex> vertices;
+    vector<unsigned int> indices;
 };
 
 #endif // MESH_H

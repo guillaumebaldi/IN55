@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 #ifndef QT_NO_OPENGL
     MainWidget widget;
     widget.show();
-    widget.load();
+  //  widget.load();
 #else
     QLabel note("OpenGL Support required");
     note.show();

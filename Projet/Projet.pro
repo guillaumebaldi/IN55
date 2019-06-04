@@ -23,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    geometryengine.cpp \
         main.cpp \
         mainwidget.cpp \
     main.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
     animbone.cpp
 
 HEADERS += \
+    geometryengine.h \
         mainwidget.h \
     mainwidget.h \
     Parser/colladaparser.h \
@@ -130,15 +132,21 @@ FORMS += \
         mainwidget.ui
 
 DISTFILES += \
+    resources/fshader.glsl \
     resources/human.blend \
     resources/human.blend1 \
     resources/human.dae \
-    assimp-vc140-mt.dll
+    assimp-vc140-mt.dll \
+    resources/vshader.glsl \
+    resources/fshader.glsl
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../build-Projet-Desktop_Qt_5_10_1_MSVC2017_64bit-Debug/release/ -lassimp-vc140-mt
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build-Projet-Desktop_Qt_5_10_1_MSVC2017_64bit-Debug/debug/ -lassimp-vc140-mt
-else:unix: LIBS += -L$$PWD/../../build-Projet-Desktop_Qt_5_10_1_MSVC2017_64bit-Debug/ -lassimp-vc140-mt
 
-INCLUDEPATH += $$PWD/../../build-Projet-Desktop_Qt_5_10_1_MSVC2017_64bit-Debug/debug
-DEPENDPATH += $$PWD/../../build-Projet-Desktop_Qt_5_10_1_MSVC2017_64bit-Debug/debug
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-Projet-Desktop_Qt_5_12_3_MSVC2015_64bit-Debug/release/ -lassimp-vc140-mt
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-Projet-Desktop_Qt_5_12_3_MSVC2015_64bit-Debug/debug/ -lassimp-vc140-mt
+else:unix: LIBS += -L$$PWD/../build-Projet-Desktop_Qt_5_12_3_MSVC2015_64bit-Debug/ -lassimp-vc140-mt
+
+INCLUDEPATH += $$PWD/../build-Projet-Desktop_Qt_5_12_3_MSVC2015_64bit-Debug/debug
+DEPENDPATH += $$PWD/../build-Projet-Desktop_Qt_5_12_3_MSVC2015_64bit-Debug/debug

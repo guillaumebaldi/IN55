@@ -7,6 +7,11 @@
 #include "mesh.h"
 #include "animation.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+
 #include <vector>
 using namespace std;
 
@@ -30,6 +35,7 @@ public:
     vector<Animation> getAnimations();
     void addAnimation(Animation a);
 private:
+    /* Model data*/
     QMatrix4x4 transform;
     vector<Bone> bones;
     vector<Mesh> meshes;

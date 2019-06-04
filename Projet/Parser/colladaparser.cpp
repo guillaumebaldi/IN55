@@ -73,18 +73,23 @@ void ColladaParser::parseBones(const aiScene* scene, aiNode *node, vector<Bone>&
 
 void ColladaParser::parseMeshes(aiMesh* mesh) {
     Mesh m;
-    m.setId(mesh->mName.C_Str());
+    //m.setId(mesh->mName.C_Str());
     if(mesh->mNumVertices > 0) {
         for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
             aiVector3D &vertex = mesh->mVertices[i];
-            QVector3D vec(vertex.x, vertex.y, vertex.z);
-            this->vertices.push_back(vec);
-            m.addVertex(vec);
+            Vertex vert;
+            vert.position.setX(vertex.x);
+            vert.position.setX(vertex.y);
+            vert.position.setX(vertex.z);
+            this->vertices.push_back(vert.position);
+
 
             aiVector3D &normal = mesh->mNormals[i];
-            QVector3D norm(normal.x, normal.y, normal.z);
-            this->normales.push_back(norm);
-            m.addNormal(norm);
+            vert.normal.setX(normal.x);
+            vert.normal.setX(normal.y);
+            vert.normal.setX(normal.z);
+            this->normales.push_back(vert.normal);
+            m.addVertex(vert);
         }
     }
     if(mesh->mNumFaces > 0) {
