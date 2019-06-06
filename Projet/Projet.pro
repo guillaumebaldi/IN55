@@ -36,7 +36,9 @@ SOURCES += \
     bone.cpp \
     mesh.cpp \
     animation.cpp \
-    animbone.cpp
+    animbone.cpp \
+    scene.cpp \
+    animationmanager.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -124,7 +126,9 @@ HEADERS += \
     bone.h \
     mesh.h \
     animation.h \
-    animbone.h
+    animbone.h \
+    scene.h \
+    animationmanager.h
 
 FORMS += \
         mainwidget.ui

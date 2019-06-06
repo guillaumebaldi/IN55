@@ -27,7 +27,7 @@ public:
     ColladaParser();
     Model loadColladaFile(string& file);
     void parseBones(const aiScene* scene, aiNode *node, vector<Bone>& bones);
-    void parseMeshes(aiMesh* mesh);
+    void parseMeshes(aiMesh* mesh, const aiScene* scene);
     void parseAnimations(string& file);
 private:
     vector<QVector3D> vertices;
@@ -35,6 +35,10 @@ private:
     vector<int> indices;
     vector<Mesh> meshes;
     vector<Animation> animations;
+    vector<Bone> bones;
 };
+
+const aiNode *getNode(const aiScene *scene, aiString name);
+const aiNode *getChildNode(aiString name, const aiNode *node);
 
 #endif // COLLADAPARSER_H

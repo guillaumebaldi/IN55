@@ -6,7 +6,7 @@
 #include "bone.h"
 #include "mesh.h"
 #include "animation.h"
-
+#include <algorithm>
 #include <vector>
 using namespace std;
 
@@ -23,12 +23,17 @@ public:
     void setBones(vector<Bone> bones);
     vector<Bone> getBones();
     void addBone(Bone b);
+    Bone getBone(string id);
+    Bone getBoneByNumber(int number);
     void setMeshes(vector<Mesh> meshes);
     vector<Mesh> getMeshes();
     void addMesh(Mesh m);
     void setAnimations(vector<Animation> animations);
     vector<Animation> getAnimations();
     void addAnimation(Animation a);
+    Animation getAnimation(string id);
+    QVector4D getIndicesBone(int vertex);
+    QVector4D getWeightsBone(int vertex, QVector4D indices);
 private:
     QMatrix4x4 transform;
     vector<Bone> bones;
