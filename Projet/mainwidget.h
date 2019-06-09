@@ -61,6 +61,11 @@ private:
     QVector3D rotationAxis;
     qreal angularSpeed;
     QQuaternion rotation;
+
+    int FPS = 60;
+    int animation = 0;
+    bool isAnimating = false;
+    double frame = 0;
 };
 
 #endif // MAINWIDGET_H

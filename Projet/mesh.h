@@ -11,17 +11,13 @@ class Mesh
 {
 public:
     Mesh();
-    string getId();
-    void setId(string id);
     vector<QVector3D> getVertices();
     vector<int> getIndices();
     vector<QVector3D> getNormales();
-    void setVertices(vector<QVector3D> vertices);
     void addVertex(QVector3D vertex);
     void addIndex(int index);
     void addNormal(QVector3D normal);
 private:
-    string id;
     vector<QVector3D> vertices;
     vector<int> indices;
     vector<QVector3D> normales;

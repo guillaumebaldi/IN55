@@ -7,8 +7,6 @@ Scene::Scene(Model model)
 
     arrayBuf.create();
     indexBuf.create();
-    /*indexBoneBuf.create();
-    weightsBuf.create();*/
 
     this->model = model;
     buildVertices();
@@ -19,8 +17,6 @@ Scene::Scene(Model model)
 Scene::~Scene() {
     arrayBuf.destroy();
     indexBuf.destroy();
-    /*indexBoneBuf.destroy();
-    weightsBuf.destroy();*/
 }
 
 void Scene::initScene() {
@@ -30,13 +26,6 @@ void Scene::initScene() {
     indexBuf.bind();
     indexBuf.allocate(indices, nbIndices * sizeof(GLushort));
 
-    /*indexBoneBuf.bind();
-    indexBoneBuf.allocate(boneIndices, nbVertices * sizeof(QVector4D));
-
-    weightsBuf.bind();
-    weightsBuf.allocate(weights, nbVertices * sizeof(QVector4D));*/
-
-    //transformBuf.bind();
     this->finalTransformations = (QMatrix4x4*)malloc(sizeof(QMatrix4x4) * model.getBones().size());
     for(unsigned int i = 0; i < model.getBones().size(); i++) {
         finalTransformations[i] = QMatrix4x4(1.0, 0.0, 0.0, 0.0,
@@ -44,8 +33,6 @@ void Scene::initScene() {
                                              0.0, 0.0, 1.0, 0.0,
                                              0.0, 0.0, 0.0, 1.0);
     }
-    /*transformBuf.allocate(finalTransformation, nbVertices * sizeof(QMatrix4x4));
-    transformBuf.release();*/
 }
 
 void Scene::animate(vector<QMatrix4x4> transformations) {
@@ -95,32 +82,6 @@ void Scene::drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQua
 
     arrayBuf.release();
 
-    //indexBoneBuf.bind();
-
-
-    //indexBoneBuf.release();
-
-    //weightsBuf.bind();
-
-
-    //weightsBuf.release();
-
-    /*indexBoneBuf.bind();
-
-    int idBonesLocation = program->attributeLocation("idBones");
-    program->enableAttributeArray(idBonesLocation);
-    program->setAttributeBuffer(idBonesLocation, GL_FLOAT, 0, 5, sizeof(int));
-
-    indexBoneBuf.release();
-
-     weightsBuf.bind();
-
-    int weightLocation = program->attributeLocation("weight");
-    program->enableAttributeArray(weightLocation);
-    program->setAttributeBuffer(weightLocation, GL_FLOAT, 0, 5, sizeof(int));
-
-    weightsBuf.release();
-    */
     program->setUniformValueArray("transform", this->finalTransformations, 19);
 
     indexBuf.bind();
@@ -172,50 +133,6 @@ void Scene::buildVertices() {
         this->vertices[i].boneIndices = model.getIndicesBone(i);
         this->vertices[i].weights = model.getWeightsBone(i, this->vertices[i].boneIndices);
     }
-
-    /*QVector4D *inde = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
-    QVector4D *weights = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
-    for(unsigned int i = 0; i < nbVertices; i++) {
-        inde[i] = model.getIndicesBone(i);
-        weights[i] = model.getWeightsBone(i, inde[i]);
-    }*/
-
-    /*vector<int> b;
-    vector<float> w;
-    for(unsigned int i = 0; i < nbVertices; i++) {
-        vector<int> indBone(model.getIndicesBone(i));
-        b.insert(std::end(b),
-                 std::begin(indBone),
-                 std::end(indBone));
-        vector<float> weig(model.getWeightsBone(i, indBone));
-        w.insert(std::end(w),
-                 std::begin(weig),
-                 std::end(weig));
-    }*/
-
-    /*this->boneIndices = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
-    this->weights = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
-
-    for(unsigned int i = 0; i < nbVertices; i++) {
-        boneIndices[i] = model.getIndicesBone(i);
-        weights[i] = model.getWeightsBone(i, boneIndices[i]);
-    }*/
-
-    /*for(int i = 0; i < nbVertices*5; i++) {
-        this->boneIndices[i] = b[i];
-        this->weights[i] = w[i];
-    }*/
-
-
-    /*for(unsigned int i = 0; i < nbVertices; i++) {
-        vector<int> in = model.getIndicesBone(i);
-        vector<float> we = model.getWeightsBone(i, in);
-        copy(in.begin(), in.end(), boneIndices);
-        copy(we.begin(), we.end(), weights);
-    }*/
-    /*for(int i = 0; i < 20; i++) {
-        std::cout << boneIndices[i] << " " << weights[i] << "\n";
-    }*/
 }
 
 Model Scene::getModel() {

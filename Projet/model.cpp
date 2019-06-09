@@ -50,11 +50,6 @@ vector<Bone> Model::getBones() {
     return this->bones;
 }
 
-void Model::addBone(Bone b) {
-    this->bones.push_back(b);
-    this->nbBones++;
-}
-
 Bone Model::getBone(string id) {
     Bone b;
     for(Bone bone : bones) {
@@ -87,11 +82,6 @@ vector<Mesh> Model::getMeshes() {
     return this->meshes;
 }
 
-void Model::addMesh(Mesh m) {
-    this->meshes.push_back(m);
-    this->nbMeshes++;
-}
-
 void Model::setAnimations(vector<Animation> animations) {
     this->animations = animations;
     this->nbAnimations = animations.size();
@@ -99,21 +89,6 @@ void Model::setAnimations(vector<Animation> animations) {
 
 vector<Animation> Model::getAnimations() {
     return this->animations;
-}
-
-void Model::addAnimation(Animation a) {
-    this->animations.push_back(a);
-    this->nbAnimations++;
-}
-
-Animation Model::getAnimation(string id) {
-    Animation a;
-    for(Animation anim : animations) {
-        if(!(anim.getId()).compare(id)) {
-            a = anim;
-        }
-    }
-    return a;
 }
 
 QVector4D Model::getIndicesBone(int vertex) {
@@ -139,18 +114,6 @@ QVector4D Model::getIndicesBone(int vertex) {
         }
     }
     return indices;
-    /*vector<int> indices;
-    for(unsigned int i = 0; i < getBones().size(); i++) {
-        vector<int> vertices = getBones()[i].getVertices();
-        if(std::find(vertices.begin(), vertices.end(), vertex) != vertices.end()) {
-            indices.push_back(getBones()[i].getNumber());
-        }
-    }
-    size_t size = indices.size();
-    for(unsigned int i = size; i < 5; i++) {
-        indices.push_back(-1);
-    }
-    return indices;*/
 }
 
 QVector4D Model::getWeightsBone(int vertex, QVector4D indices) {
@@ -159,9 +122,4 @@ QVector4D Model::getWeightsBone(int vertex, QVector4D indices) {
                                   getBoneByNumber(indices.z()).getWeight(vertex),
                                   getBoneByNumber(indices.w()).getWeight(vertex));
     return weights;
-    /*vector<float> weights;
-    for(unsigned int i = 0; i < indices.size(); i++) {
-        weights.push_back(getBoneByNumber(indices[i]).getWeight(vertex));
-    }
-    return weights;*/
 }

@@ -24,18 +24,19 @@ public:
     AnimationManager();
     AnimationManager(Scene*);
     void playIdle();
-    void playHello();
-    void playWalk();
-    void playRun();
-    void playJump();
-    void setIdle(vector<QMatrix4x4> t);
-    vector<QMatrix4x4> getIdle();
-    void setWalk(vector<QMatrix4x4> t);
-    vector<QMatrix4x4> getWalk();
+    void playHello(double t);
+    void playWalk(double t);
+    void playRun(double t);
+    void playJump(double t);
+    vector<QMatrix4x4> getTransformations(double t, Animation anim);
 private:
+    void calcTransformations(double t, Animation anim, AnimBone bone, vector<QMatrix4x4> &transformations, QMatrix4x4 parent);
+    QMatrix4x4 calcInterpolatedPosition(double t, AnimBone bone);
+    QMatrix4x4 calcInterpolatedRotation(double t, AnimBone bone);
+    QMatrix4x4 calcInterpolatedScale(double t, AnimBone bone);
+
     Scene *scene;
-    vector<QMatrix4x4> idleTransformations;
-    vector<QMatrix4x4> walkTransformations;
+    Model m;
 };
 
 #endif // ANIMATIONMANAGER_H

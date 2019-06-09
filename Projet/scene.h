@@ -37,14 +37,11 @@ public:
     Model getModel();
 
     void animate(vector<QMatrix4x4> transformations);
-    //void animate(vector<QVector3D> positions, vector<QVector3D> scales, vector<QQuaternion> rotations);
 private:
     void initScene();
     void buildVertices();
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
-    /*QOpenGLBuffer indexBoneBuf;
-    QOpenGLBuffer weightsBuf;*/
 
     QMatrix4x4 *finalTransformations;
 
@@ -52,9 +49,6 @@ private:
 
     VertexData* vertices;
     GLushort* indices;
-    /*QVector4D* boneIndices;
-    QVector4D* weights;*/
-
     size_t nbVertices = 0;
     size_t nbIndices = 0;
 };

@@ -5,14 +5,6 @@ Mesh::Mesh()
 
 }
 
-string Mesh::getId() {
-    return this->id;
-}
-
-void Mesh::setId(string id) {
-    this->id = id;
-}
-
 vector<QVector3D> Mesh::getVertices() {
     return this->vertices;
 }
@@ -23,10 +15,6 @@ vector<int> Mesh::getIndices() {
 
 vector<QVector3D> Mesh::getNormales() {
     return this->normales;
-}
-
-void Mesh::setVertices(vector<QVector3D> vertices) {
-    this->vertices = vertices;
 }
 
 void Mesh::addVertex(QVector3D vertex) {

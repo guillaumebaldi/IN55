@@ -44,9 +44,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     // Increase angular speed
     angularSpeed += acc;
 }
-//! [0]
 
-//! [1]
 void MainWidget::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
@@ -55,33 +53,61 @@ void MainWidget::timerEvent(QTimerEvent *)
     // Stop rotation when speed goes below threshold
     if (angularSpeed < 0.01) {
         angularSpeed = 0.0;
-    } else {
+    }
+    else {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
         // Request an update
         update();
     }
+    if(isAnimating) {
+        double duration = scene->getModel().getAnimations()[animation - 1].getDuration();
+        if(animation == 2){
+            manager->playHello(frame);
+        }
+        else if(animation == 3) {
+            manager->playWalk(frame);
+        }
+        else if(animation == 4) {
+            manager->playRun(frame);
+        }
+        else if(animation == 5) {
+            manager->playJump(frame);
+        }
+        frame += 0.02;
+        if(frame >= 0.99) {
+            frame = 0;
+        }
+    }
 }
 
 void MainWidget::keyPressEvent(QKeyEvent *e) {
     switch(e->key()) {
         case Qt::Key_1:
-            //manager->playIdle();
-            scene->animate(manager->getIdle());
+            frame = 0;
+            animation = 1;
+            manager->playIdle();
             break;
         case Qt::Key_2:
-            manager->playHello();
+            frame = 0;
+            animation = 2;
+            isAnimating = true;
             break;
         case Qt::Key_3:
-            scene->animate(manager->getWalk());
-            manager->playWalk();
+            frame = 0;
+            animation = 3;
+            isAnimating = true;
             break;
         case Qt::Key_4:
-            manager->playRun();
+            frame = 0;
+            animation = 4;
+            isAnimating = true;
             break;
         case Qt::Key_5:
-            manager->playJump();
+            frame = 0;
+            animation = 5;
+            isAnimating = true;
             break;
     }
 }
@@ -100,16 +126,11 @@ void MainWidget::initializeGL() {
     ColladaParser parser;
     string s = "resources\\human2.dae";
     Model m = parser.loadColladaFile(s);
-    for(int i = 0; i < m.getBones().size(); i++) {
-        //std::cout << m.getBones()[i].getId() << " " <<m.getBones()[i].getTransform().data()[0] << "\n";
-    }
 
     scene = new Scene(m);
     manager = new AnimationManager(scene);
-    manager->setIdle(parser.idleTrans);
-    manager->setWalk(parser.walkTrans);
 
-    timer.start(12, this);
+    timer.start((int)1000/FPS, this);
 }
 
 void MainWidget::initShaders() {
