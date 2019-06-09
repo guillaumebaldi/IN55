@@ -14,29 +14,89 @@ string AnimBone::getId() {
     return this->id;
 }
 
-void AnimBone::setPositions(vector<QVector3D> positions) {
+void AnimBone::setPositions(vector<aiVectorKey> positions) {
     this->positions = positions;
-    this->nbPositions = positions.size();
 }
 
-vector<QVector3D> AnimBone::getPositions() {
+vector<aiVectorKey> AnimBone::getPositions() {
     return this->positions;
 }
 
-void AnimBone::setScales(vector<QVector3D> scales) {
-    this->scales = scales;
-    this->nbScales = scales.size();
+aiVectorKey AnimBone::getPosition(float id) {
+    return this->positions[id];
 }
 
-vector<QVector3D> AnimBone::getScales() {
+int AnimBone::getIdPosition(float t) {
+    for(unsigned int i = 0; i < nbPositions - 1; i++) {
+        if(t < (float)this->positions[i+1].mTime) {
+            return i;
+        }
+    }
+}
+
+void AnimBone::addPosition(aiVectorKey position) {
+    this->positions.push_back(position);
+    this->nbPositions++;
+}
+
+int AnimBone::getNbPositions() {
+    return this->nbPositions;
+}
+
+void AnimBone::setScales(vector<aiVectorKey> scales) {
+    this->scales = scales;
+}
+
+vector<aiVectorKey> AnimBone::getScales() {
     return this->scales;
 }
 
-void AnimBone::setRotations(vector<QQuaternion> rotations) {
-    this->rotations = rotations;
-    this->nbRotations = rotations.size();
+aiVectorKey AnimBone::getScale(float id) {
+    return this->scales[id];
 }
 
-vector<QQuaternion> AnimBone::getRotations() {
+int AnimBone::getIdScale(float t) {
+    for(unsigned int i = 0; i < nbScales - 1; i++) {
+        if(t < (float)this->scales[i+1].mTime) {
+            return i;
+        }
+    }
+}
+
+void AnimBone::addScale(aiVectorKey scale) {
+    this->scales.push_back(scale);
+    this->nbScales++;
+}
+
+int AnimBone::getNbScales() {
+    return this->nbScales;
+}
+
+void AnimBone::setRotations(vector<aiQuatKey> rotations) {
+    this->rotations = rotations;
+}
+
+vector<aiQuatKey> AnimBone::getRotations() {
     return this->rotations;
+}
+
+aiQuatKey AnimBone::getRotation(float id) {
+    return this->rotations[id];
+}
+
+int AnimBone::getIdRotation(float t) {
+    for(unsigned int i = 0; i < nbRotations - 1; i++) {
+        if(t < (float)this->rotations[i+1].mTime) {
+            return i;
+        }
+    }
+}
+
+void AnimBone::addRotation(aiQuatKey rotation) {
+    this->rotations.push_back(rotation);
+    this->nbRotations++;
+}
+
+int AnimBone::getNbRotations() {
+    return this->nbRotations;
 }

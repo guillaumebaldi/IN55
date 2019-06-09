@@ -24,6 +24,14 @@ void Bone::setTransform(QMatrix4x4 m) {
     this->transform = m;
 }
 
+QMatrix4x4 Bone::getOffset() {
+    return this->offset;
+}
+
+void Bone::setOffset(QMatrix4x4 m) {
+    this->offset = m;
+}
+
 string Bone::getId() {
     return this->id;
 }
@@ -32,11 +40,11 @@ void Bone::setId(string id) {
     this->id = id;
 }
 
-string Bone::getParent() {
+QMatrix4x4 Bone::getParent() {
     return this->parent;
 }
 
-void Bone::setParent(string parent) {
+void Bone::setParent(QMatrix4x4 parent) {
     this->parent = parent;
 }
 
@@ -74,4 +82,12 @@ float Bone::getWeight(int vertex) {
 
 void Bone::addWeight(float w) {
     this->weights.push_back(w);
+}
+
+vector<Bone> Bone::getChildren() {
+    return this->children;
+}
+
+void Bone::addChild(Bone b) {
+    this->children.push_back(b);
 }

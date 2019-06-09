@@ -40,3 +40,11 @@ void Animation::setTimes(vector<double> times) {
 vector<double> Animation::getTimes() {
     return this->times;
 }
+
+void Animation::setDuration(double d) {
+    this->duration = d;
+}
+
+double Animation::getDuration() {
+    return this->duration;
+}

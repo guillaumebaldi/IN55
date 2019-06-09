@@ -7,8 +7,8 @@ Scene::Scene(Model model)
 
     arrayBuf.create();
     indexBuf.create();
-    indexBoneBuf.create();
-    weightsBuf.create();
+    /*indexBoneBuf.create();
+    weightsBuf.create();*/
 
     this->model = model;
     buildVertices();
@@ -19,8 +19,8 @@ Scene::Scene(Model model)
 Scene::~Scene() {
     arrayBuf.destroy();
     indexBuf.destroy();
-    indexBoneBuf.destroy();
-    weightsBuf.destroy();
+    /*indexBoneBuf.destroy();
+    weightsBuf.destroy();*/
 }
 
 void Scene::initScene() {
@@ -30,15 +30,15 @@ void Scene::initScene() {
     indexBuf.bind();
     indexBuf.allocate(indices, nbIndices * sizeof(GLushort));
 
-    indexBoneBuf.bind();
+    /*indexBoneBuf.bind();
     indexBoneBuf.allocate(boneIndices, nbVertices * sizeof(QVector4D));
 
     weightsBuf.bind();
-    weightsBuf.allocate(weights, nbVertices * sizeof(QVector4D));
+    weightsBuf.allocate(weights, nbVertices * sizeof(QVector4D));*/
 
     //transformBuf.bind();
-    this->finalTransformations = (QMatrix4x4*)malloc(sizeof(QMatrix4x4) * nbVertices);
-    for(unsigned int i = 0; i < nbVertices; i++) {
+    this->finalTransformations = (QMatrix4x4*)malloc(sizeof(QMatrix4x4) * model.getBones().size());
+    for(unsigned int i = 0; i < model.getBones().size(); i++) {
         finalTransformations[i] = QMatrix4x4(1.0, 0.0, 0.0, 0.0,
                                              0.0, 1.0, 0.0, 0.0,
                                              0.0, 0.0, 1.0, 0.0,
@@ -48,79 +48,10 @@ void Scene::initScene() {
     transformBuf.release();*/
 }
 
-void Scene::animate(vector<QVector3D> positions, vector<QVector3D> scales, vector<QQuaternion> rotations) {
-    /*vector<QMatrix4x4> posTransformation;
-    vector<QVector3D> posVertex;
-    vector<QMatrix4x4> scaleTransformation;
-    vector<QVector3D> scaleVertex;
-    vector<QMatrix4x4> rotationTransformaion;
-    vector<QQuaternion> rotationVertex;*/
-
-    for(unsigned int i = 0; i < positions.size(); i++) {
-        QMatrix4x4 posTransformation = QMatrix4x4(1.0, 0.0, 0.0, positions[i].x(),
-                                                  0.0, 1.0, 0.0, positions[i].y(),
-                                                  0.0, 0.0, 1.0, positions[i].z(),
-                                                  0.0, 0.0, 0.0, 1.0);
-        QMatrix4x4 scaleTransformation = QMatrix4x4(scales[i].x(), 0.0, 0.0, 0.0,
-                                                    0.0, scales[i].y(), 0.0, 0.0,
-                                                    0.0, 0.0, scales[i].z(), 0.0,
-                                                    0.0, 0.0, 0.0, 1.0);
-        float x = rotations[i].x();
-        float y = rotations[i].y();
-        float z = rotations[i].z();
-        float s = rotations[i].scalar();
-        QMatrix4x4 rotationTransformation = QMatrix4x4(1-2*pow(y,2)-2*pow(z,2), 2*x*y-2*s*z, 2*x*z+2*s*y, 0.0,
-                                                      2*x*y+2*s*z, 1-2*pow(x,2)-2*pow(z,2), 2*y*z-2*s*x, 0.0,
-                                                      2*x*z-2*s*y, 2*y*z+2*s*x, 1-2*pow(x,2)-2*pow(y,2), 0.0,
-                                                      0.0, 0.0, 0.0, 1.0);
-
-        QMatrix4x4 temp = posTransformation * rotationTransformation * scaleTransformation;
-        QMatrix4x4 temp2;
-        if(i == 0) {
-            temp2 = QMatrix4x4(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1) * temp;
-        }
-        else {
-            temp2 = model.getBone(model.getBoneByNumber(i).getParent()).getTransform() * temp;
-        }
-        this->finalTransformations[i] = temp2 * model.getBoneByNumber(i).getTransform();
-        //this->finalTransformations[i] = posTransformation * rotationTransformation * scaleTransformation;
+void Scene::animate(vector<QMatrix4x4> transformations) {
+    for(unsigned int i = 0; i < model.getBones().size(); i++) {
+        this->finalTransformations[i] = transformations[i];
     }
-
-    /*for(unsigned int i = 0; i < nbVertices; i++) {
-        posVertex.push_back(QVector3D(0.0, 0.0, 0.0));
-        scaleVertex.push_back(QVector3D(0.0, 0.0, 0.0));
-        rotationVertex.push_back(QQuaternion(0.0, 0.0, 0.0, 0.0));
-    }
-    int s = 0;
-    for(unsigned int i = 0; i < positions.size(); i++) {
-        for(int j = s; j < s+offset[i]; j++) {
-            posVertex[id[j]] += (positions[i] * weights[j]);
-            scaleVertex[id[j]] += (scales[i] * weights[j]);
-            rotationVertex[id[j]] += (rotations[i] * weights[j]);
-        }
-        s += offset[i];
-    }
-
-    for(unsigned int i = 0; i < nbVertices; i++) {
-        posTransformation.push_back(QMatrix4x4(1.0, 0.0, 0.0, posVertex[i].x(),
-                                 0.0, 1.0, 0.0, posVertex[i].y(),
-                                 0.0, 0.0, 1.0, posVertex[i].z(),
-                                 0.0, 0.0, 0.0, 1.0));
-        scaleTransformation.push_back(QMatrix4x4(scaleVertex[i].x(), 0.0, 0.0, 0.0,
-                                                 0.0, scaleVertex[i].y(), 0.0, 0.0,
-                                                 0.0, 0.0, scaleVertex[i].z(), 0.0,
-                                                 0.0, 0.0, 0.0, 1.0));
-        float x = rotationVertex[i].x();
-        float y = rotationVertex[i].y();
-        float z = rotationVertex[i].z();
-        float s = rotationVertex[i].scalar();
-        rotationTransformaion.push_back(QMatrix4x4(1-2*pow(y,2)-2*pow(z,2), 2*x*y-2*s*z, 2*x*z+2*s*y, 0.0,
-                                                   2*x*y+2*s*z, 1-2*pow(x,2)-2*pow(z,2), 2*y*z-2*s*x, 0.0,
-                                                   2*x*z-2*s*y, 2*y*z+2*s*x, 1-2*pow(x,2)-2*pow(y,2), 0.0,
-                                                   0.0, 0.0, 0.0, 1.0));
-
-        this->finalTransformations[i] = posTransformation[i] * rotationTransformaion[i] * scaleTransformation[i];
-    }*/
 }
 
 void Scene::drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQuaternion rotation) {
@@ -150,23 +81,29 @@ void Scene::drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQua
     program->enableAttributeArray(uvLocation);
     program->setAttributeBuffer(uvLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
 
-    arrayBuf.release();
-
-    indexBoneBuf.bind();
+    offset += sizeof(QVector2D);
 
     int idBonesLocation = program->attributeLocation("idBones");
     program->enableAttributeArray(idBonesLocation);
-    program->setAttributeBuffer(idBonesLocation, GL_FLOAT, 0, 4, sizeof(QVector4D));
+    program->setAttributeBuffer(idBonesLocation, GL_FLOAT, offset, 4, sizeof(VertexData));
 
-    indexBoneBuf.release();
-
-    weightsBuf.bind();
+    offset += sizeof(QVector4D);
 
     int weightLocation = program->attributeLocation("weight");
     program->enableAttributeArray(weightLocation);
-    program->setAttributeBuffer(weightLocation, GL_FLOAT, 0, 4, sizeof(QVector4D));
+    program->setAttributeBuffer(weightLocation, GL_FLOAT, offset, 4, sizeof(VertexData));
 
-    weightsBuf.release();
+    arrayBuf.release();
+
+    //indexBoneBuf.bind();
+
+
+    //indexBoneBuf.release();
+
+    //weightsBuf.bind();
+
+
+    //weightsBuf.release();
 
     /*indexBoneBuf.bind();
 
@@ -232,6 +169,8 @@ void Scene::buildVertices() {
         this->vertices[i].normal = normalesMeshes[i];
         this->vertices[i].color = QVector3D(1.0f, 1.0f, 1.0f);
         this->vertices[i].uv = QVector2D(0.0f, 0.0f);
+        this->vertices[i].boneIndices = model.getIndicesBone(i);
+        this->vertices[i].weights = model.getWeightsBone(i, this->vertices[i].boneIndices);
     }
 
     /*QVector4D *inde = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
@@ -254,13 +193,13 @@ void Scene::buildVertices() {
                  std::end(weig));
     }*/
 
-    this->boneIndices = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
+    /*this->boneIndices = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
     this->weights = (QVector4D*)malloc(sizeof(QVector4D) * nbVertices);
 
     for(unsigned int i = 0; i < nbVertices; i++) {
         boneIndices[i] = model.getIndicesBone(i);
         weights[i] = model.getWeightsBone(i, boneIndices[i]);
-    }
+    }*/
 
     /*for(int i = 0; i < nbVertices*5; i++) {
         this->boneIndices[i] = b[i];

@@ -13,18 +13,6 @@ MainWidget::MainWidget(QWidget *parent) :
 {
 }
 
-/*void MainWidget::load() {
-
-    ColladaParser parser;
-    string s = "resources\\human_walk.dae";
-    Model m = parser.loadColladaFile(s);
-    for(int i = 0; i < m.getBones().size(); i++) {
-        //std::cout << m.getBones()[i].getId() << " " <<m.getBones()[i].getTransform().data()[0] << "\n";
-    }
-    //this->scene(m);
-    //std::cout << scene->vertices[0].position.x();
-}*/
-
 MainWidget::~MainWidget()
 {
     makeCurrent();
@@ -79,12 +67,14 @@ void MainWidget::timerEvent(QTimerEvent *)
 void MainWidget::keyPressEvent(QKeyEvent *e) {
     switch(e->key()) {
         case Qt::Key_1:
-            manager->playIdle();
+            //manager->playIdle();
+            scene->animate(manager->getIdle());
             break;
         case Qt::Key_2:
             manager->playHello();
             break;
         case Qt::Key_3:
+            scene->animate(manager->getWalk());
             manager->playWalk();
             break;
         case Qt::Key_4:
@@ -116,6 +106,8 @@ void MainWidget::initializeGL() {
 
     scene = new Scene(m);
     manager = new AnimationManager(scene);
+    manager->setIdle(parser.idleTrans);
+    manager->setWalk(parser.walkTrans);
 
     timer.start(12, this);
 }

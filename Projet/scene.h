@@ -22,6 +22,8 @@ struct VertexData {
     QVector3D color;
     QVector3D normal;
     QVector2D uv;
+    QVector4D boneIndices;
+    QVector4D weights;
 };
 
 class Scene : protected QOpenGLFunctions
@@ -34,14 +36,15 @@ public:
     void drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQuaternion rotation);
     Model getModel();
 
-    void animate(vector<QVector3D> positions, vector<QVector3D> scales, vector<QQuaternion> rotations);
+    void animate(vector<QMatrix4x4> transformations);
+    //void animate(vector<QVector3D> positions, vector<QVector3D> scales, vector<QQuaternion> rotations);
 private:
     void initScene();
     void buildVertices();
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
-    QOpenGLBuffer indexBoneBuf;
-    QOpenGLBuffer weightsBuf;
+    /*QOpenGLBuffer indexBoneBuf;
+    QOpenGLBuffer weightsBuf;*/
 
     QMatrix4x4 *finalTransformations;
 
@@ -49,8 +52,8 @@ private:
 
     VertexData* vertices;
     GLushort* indices;
-    QVector4D* boneIndices;
-    QVector4D* weights;
+    /*QVector4D* boneIndices;
+    QVector4D* weights;*/
 
     size_t nbVertices = 0;
     size_t nbIndices = 0;

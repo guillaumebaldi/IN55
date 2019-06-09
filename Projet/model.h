@@ -34,6 +34,7 @@ public:
     Animation getAnimation(string id);
     QVector4D getIndicesBone(int vertex);
     QVector4D getWeightsBone(int vertex, QVector4D indices);
+    aiMatrix4x4 inverse;
 private:
     QMatrix4x4 transform;
     vector<Bone> bones;
