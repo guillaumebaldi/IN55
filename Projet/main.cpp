@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
 
 #ifndef QT_NO_OPENGL
     MainWidget widget;
+
+    widget.setMinimumSize(800, 640);
     widget.show();
 #else
     QLabel note("OpenGL Support required");

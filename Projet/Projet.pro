@@ -38,7 +38,8 @@ SOURCES += \
     animation.cpp \
     animbone.cpp \
     scene.cpp \
-    animationmanager.cpp
+    animationmanager.cpp \
+    camera.cpp
 
 HEADERS += \
         mainwidget.h \
@@ -128,7 +129,8 @@ HEADERS += \
     animation.h \
     animbone.h \
     scene.h \
-    animationmanager.h
+    animationmanager.h \
+    camera.h
 
 FORMS += \
         mainwidget.ui

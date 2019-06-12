@@ -41,7 +41,7 @@ void Scene::animate(vector<QMatrix4x4> transformations) {
     }
 }
 
-void Scene::drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQuaternion rotation) {
+void Scene::drawScene(QOpenGLShaderProgram *program) {
     arrayBuf.bind();
 
     quintptr offset = 0;
@@ -86,10 +86,6 @@ void Scene::drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQua
 
     indexBuf.bind();
 
-    QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -5.0);
-    matrix.rotate(rotation);
-    program->setUniformValue("mvp", projection * matrix);
     glDrawElements(GL_TRIANGLES, nbIndices, GL_UNSIGNED_SHORT, 0);
 
     indexBuf.release();
@@ -128,7 +124,7 @@ void Scene::buildVertices() {
     for(unsigned int i = 0; i < this->nbVertices; i++) {
         this->vertices[i].position = verticesMeshes[i];
         this->vertices[i].normal = normalesMeshes[i];
-        this->vertices[i].color = QVector3D(1.0f, 1.0f, 1.0f);
+        this->vertices[i].color = QVector3D(0.7f, 0.7f, 0.7f);
         this->vertices[i].uv = QVector2D(0.0f, 0.0f);
         this->vertices[i].boneIndices = model.getIndicesBone(i);
         this->vertices[i].weights = model.getWeightsBone(i, this->vertices[i].boneIndices);

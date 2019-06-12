@@ -4,35 +4,6 @@ Model::Model() {
 
 }
 
-Model::Model(QMatrix4x4 transform)
-{
-    this->transform = transform;
-}
-
-Model::Model(QMatrix4x4 transform , vector<Bone> bones) {
-    this->transform = transform;
-    this->bones = bones;
-    this->nbBones = bones.size();
-}
-
-Model::Model(QMatrix4x4 transform , vector<Bone> bones, vector<Mesh> meshes) {
-    this->transform = transform;
-    this->bones = bones;
-    this->nbBones = bones.size();
-    this->meshes = meshes;
-    this->nbMeshes = meshes.size();
-}
-
-Model::Model(QMatrix4x4 transform , vector<Bone> bones, vector<Mesh> meshes, vector<Animation> animations) {
-    this->transform = transform;
-    this->bones = bones;
-    this->nbBones = bones.size();
-    this->meshes = meshes;
-    this->nbMeshes = meshes.size();
-    this->animations = animations;
-    this->nbAnimations = animations.size();
-}
-
 QMatrix4x4 Model::getTransform() {
     return this->transform;
 }

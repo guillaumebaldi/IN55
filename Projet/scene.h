@@ -33,7 +33,7 @@ public:
     Scene(Model);
     virtual ~Scene();
 
-    void drawScene(QOpenGLShaderProgram *program, QMatrix4x4 projection, QQuaternion rotation);
+    void drawScene(QOpenGLShaderProgram *program);
     Model getModel();
 
     void animate(vector<QMatrix4x4> transformations);

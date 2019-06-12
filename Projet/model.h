@@ -14,10 +14,6 @@ class Model
 {
 public:
     Model();
-    Model(QMatrix4x4);
-    Model(QMatrix4x4, vector<Bone>);
-    Model(QMatrix4x4, vector<Bone>, vector<Mesh>);
-    Model(QMatrix4x4, vector<Bone>, vector<Mesh>, vector<Animation>);
     QMatrix4x4 getTransform();
     void setTransform(QMatrix4x4 m);
     void setBones(vector<Bone> bones);

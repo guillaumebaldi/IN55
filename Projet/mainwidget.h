@@ -12,12 +12,16 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QPixmap>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "Parser/colladaparser.h"
 #include "model.h"
 #include "bone.h"
 #include "scene.h"
 #include "animationmanager.h"
+#include "camera.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -36,6 +40,9 @@ public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
 
+public slots:
+    void setCameraInitialPosition();
+
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
@@ -50,22 +57,22 @@ protected:
     void initTextures();
 
 private:
+    QLineEdit *line;
+    QLabel *label;
+    QPushButton *button;
     QBasicTimer timer;
     Scene *scene;
     AnimationManager *manager;
+    Camera *camera;
     QOpenGLShaderProgram program;
 
     QMatrix4x4 projection;
-
-    QVector2D mousePressPosition;
-    QVector3D rotationAxis;
-    qreal angularSpeed;
-    QQuaternion rotation;
 
     int FPS = 60;
     int animation = 0;
     bool isAnimating = false;
     double frame = 0;
+    double animationSpeed = 1;
 };
 
 #endif // MAINWIDGET_H
