@@ -1,3 +1,8 @@
+/**
+  Mesh :
+  Data structure containing the vertices, indices and normales
+*/
+
 #ifndef MESH_H
 #define MESH_H
 

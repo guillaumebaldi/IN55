@@ -1,3 +1,8 @@
+/**
+  ColladaParser :
+  Parses COLLADA files to have model, bones and animations
+*/
+
 #ifndef COLLADAPARSER_H
 #define COLLADAPARSER_H
 

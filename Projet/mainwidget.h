@@ -1,3 +1,8 @@
+/**
+  MainWidget :
+  Window of the application that manages printing and controls
+*/
+
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 

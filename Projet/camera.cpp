@@ -8,54 +8,66 @@ Camera::Camera()
     this->speed = SPEED;
 }
 
+/*
+ * Moves the camera for rotation
+ */
 void Camera::move(QVector2D p) {
-    // Mouse release position - mouse press position
     QVector2D diff = p - mousePressPosition;
 
-    // Rotation axis is perpendicular to the mouse position difference
-    // vector
     QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
 
-    // Accelerate angular speed relative to the length of the mouse sweep
     qreal acc = diff.length() / 100.0;
 
-    // Calculate new rotation axis as weighted sum
     rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
 
-    // Increase angular speed
     angularSpeed += acc;
 }
 
+/*
+ * Updates rotation of camera
+ */
 void Camera::update() {
-    // Decrease angular speed (friction)
     angularSpeed *= 0.99;
 
-    // Stop rotation when speed goes below threshold
     if (angularSpeed < 0.01) {
         angularSpeed = 0.0;
     }
     else {
-        // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
     }
 }
 
+/*
+ * Returns rotation of camera
+ */
 QQuaternion Camera::getRotation() {
     return this->rotation;
 }
 
+/*
+ * Returns position of camera
+ */
 QVector3D Camera::getPosition() {
     return this->position;
 }
 
+/*
+ * Returns angular speed of camera
+ */
 qreal Camera::getAngularSpeed() {
     return this->angularSpeed;
 }
 
+/*
+ * Sets mouse press position
+ */
 void Camera::setMousePressPosition(QVector2D p) {
     this->mousePressPosition = p;
 }
 
+/*
+ * Translates camera
+ */
 void Camera::input(Camera_Movement m, float t) {
     float velocity = speed * t;
     if(m == FORWARD) {
@@ -72,6 +84,9 @@ void Camera::input(Camera_Movement m, float t) {
     }
 }
 
+/*
+ * Puts the camera at its initial position
+ */
 void Camera::setInitialPosition() {
     this->position = QVector3D(0.0f, 0.0f, 0.0f);
     this->rotationAxis = QVector3D(0.0f, 0.0f, 0.0f);

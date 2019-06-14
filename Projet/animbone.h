@@ -1,3 +1,8 @@
+/**
+  AnimBone :
+  Data structure containing the translations, rotations and scales applied on a bone
+*/
+
 #ifndef ANIMBONE_H
 #define ANIMBONE_H
 

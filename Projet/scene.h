@@ -1,3 +1,8 @@
+/**
+  Scene :
+  Gives the vertices and the transformations to be applied on the model on the window
+*/
+
 #ifndef SCENE_H
 #define SCENE_H
 

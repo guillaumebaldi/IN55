@@ -1,3 +1,8 @@
+/**
+  AnimationManager :
+  Handles the process of an animation
+*/
+
 #ifndef ANIMATIONMANAGER_H
 #define ANIMATIONMANAGER_H
 

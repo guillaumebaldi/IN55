@@ -1,3 +1,8 @@
+/**
+  Bone :
+  Data structure containing the transform, vertices and weights of a bone
+*/
+
 #ifndef BONE_H
 #define BONE_H
 

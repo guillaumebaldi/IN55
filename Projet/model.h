@@ -1,3 +1,8 @@
+/**
+  Model :
+  Main data structure containing the bones, the mesh and the animations
+*/
+
 #ifndef MODEL_H
 #define MODEL_H
 

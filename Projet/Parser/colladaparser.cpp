@@ -1,11 +1,14 @@
 #include "colladaparser.h"
 
-
 ColladaParser::ColladaParser() {
 
 }
 
+/*
+ * Loads the COLLADA file containing the model and the bones and returns a model with all data
+ */
 Model ColladaParser::loadColladaFile(string& file) {
+    //Imports file with Assimp
     Assimp::Importer importer;
     scene = importer.ReadFile(file,
           aiProcess_CalcTangentSpace       |
@@ -21,8 +24,10 @@ Model ColladaParser::loadColladaFile(string& file) {
         exit(-1);
     }
 
+    //Gets the mesh
     parseMeshes(scene->mMeshes[1]);
 
+    //Transform of the model
     aiMatrix4x4 transform = scene->mRootNode->mTransformation;
     QMatrix4x4 mat(transform.a1, transform.a2, transform.a3, transform.a4,
                    transform.b1, transform.b2, transform.b3, transform.b4,
@@ -30,6 +35,7 @@ Model ColladaParser::loadColladaFile(string& file) {
                    transform.d1, transform.d2, transform.d3, transform.d4);
     m.setTransform(mat);
 
+    //Creates the children of each bone
     for(int i = 0; i < bones.size(); i++) {
         for(int j = i; j < bones.size(); j++) {
             if(bones[j].getParent() == bones[i].getTransform()) {
@@ -41,15 +47,16 @@ Model ColladaParser::loadColladaFile(string& file) {
     m.setBones(this->bones);
     m.setMeshes(this->meshes);
 
-    string s = "resources\\human2_idle.dae";
+    //Parses animations
+    string s = "resources\\human_idle.dae";
     parseAnimations(s);
-    s = "resources\\human2_hello.dae";
+    s = "resources\\human_hello.dae";
     parseAnimations(s);
-    s = "resources\\human2_walk.dae";
+    s = "resources\\human_walk.dae";
     parseAnimations(s);
-    s = "resources\\human2_run.dae";
+    s = "resources\\human_run.dae";
     parseAnimations(s);
-    s = "resources\\human2_jump.dae";
+    s = "resources\\human_jump.dae";
     parseAnimations(s);
 
     m.setAnimations(this->animations);
@@ -57,8 +64,12 @@ Model ColladaParser::loadColladaFile(string& file) {
     return m;
 }
 
+/*
+ * Parses the mesh
+ */
 void ColladaParser::parseMeshes(aiMesh* mesh) {
     Mesh m;
+    //Gets all the vertices and normales
     if(mesh->mNumVertices > 0) {
         for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
             aiVector3D &vertex = mesh->mVertices[i];
@@ -70,6 +81,7 @@ void ColladaParser::parseMeshes(aiMesh* mesh) {
             m.addNormal(norm);
         }
     }
+    //Gets all the faces to have the indices
     if(mesh->mNumFaces > 0) {
         for(unsigned int i = 0; i < mesh->mNumFaces; i++) {
             aiFace *face = &mesh->mFaces[i];
@@ -79,6 +91,7 @@ void ColladaParser::parseMeshes(aiMesh* mesh) {
             }
         }
     }
+    //Gets all the bones
     if(mesh->HasBones()) {
         for(unsigned int i = 0; i < mesh->mNumBones; i++) {
             aiBone *bone = mesh->mBones[i];
@@ -88,6 +101,7 @@ void ColladaParser::parseMeshes(aiMesh* mesh) {
             b.setId(bone->mName.C_Str());
             aiMatrix4x4 parent = p->mParent->mTransformation;
             string n = p->mParent->mName.C_Str();
+            //If first bone, then its parent is the model
             if(!n.compare("Armature")) {
                 parent = scene->mRootNode->mTransformation;
             }
@@ -105,6 +119,7 @@ void ColladaParser::parseMeshes(aiMesh* mesh) {
                                    offset.b1, offset.b2, offset.b3, offset.b4,
                                    offset.c1, offset.c2, offset.c3, offset.c4,
                                    offset.d1, offset.d2, offset.d3, offset.d4));
+            //Vertices and weights of each bone
             for(unsigned int j = 0; j < bone->mNumWeights; j++) {
                 b.addVertex(bone->mWeights[j].mVertexId);
                 b.addWeight(bone->mWeights[j].mWeight);
@@ -112,11 +127,14 @@ void ColladaParser::parseMeshes(aiMesh* mesh) {
             this->bones.push_back(b);
         }
     }
-
     this->meshes.push_back(m);
 }
 
+/*
+ * Parses the animation
+ */
 void ColladaParser::parseAnimations(string &file) {
+    //Import the file with the animation
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(file,
           aiProcess_CalcTangentSpace       |
@@ -134,19 +152,23 @@ void ColladaParser::parseAnimations(string &file) {
     }
 
     for(unsigned int i = 0; i < scene->mNumAnimations; i++) {
+        //Name of the animation
         string nTemp = file.substr(file.find("_")+1);
         string name(nTemp.begin(), std::find(nTemp.begin(), nTemp.end(), '.'));
         Animation a(name);
         const aiAnimation *anim = scene->mAnimations[i];
         a.setDuration(anim->mDuration);
+        //For each bone used in animation
         for(unsigned int b = 0; b < this->bones.size(); b++) {
             const aiNodeAnim * nodeAnim = anim->mChannels[b];
             string n = nodeAnim->mNodeName.C_Str();
+            //Not the Inverse Kinematics bones used in Blender
             if(n.compare("Armature_JambeIK_L") &&
                     n.compare("Armature_JambeIK_R") &&
                     n.compare("Armature_PoleTarget_L") &&
                     n.compare("Armature_PoleTarget_R")) {
                 AnimBone animBone(n);
+                //Adds all translations, scales and rotations
                 for(unsigned int nPos = 0; nPos < nodeAnim->mNumPositionKeys; nPos++) {
                     animBone.addPosition(nodeAnim->mPositionKeys[nPos]);
                 }

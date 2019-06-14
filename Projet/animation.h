@@ -1,3 +1,8 @@
+/**
+  Animation :
+  Data structure containing the bones used during the process of an animation
+*/
+
 #ifndef ANIMATION_H
 #define ANIMATION_H
 

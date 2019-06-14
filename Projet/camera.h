@@ -1,3 +1,8 @@
+/**
+  Camera :
+  Free camera of the MainWidget
+*/
+
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -15,6 +20,7 @@
 #include <QMouseEvent>
 #include <cmath>
 
+//Possible movements of camera in translation
 enum Camera_Movement {
     FORWARD,
     BACKWARD,
